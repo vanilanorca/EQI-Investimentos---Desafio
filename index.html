@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Investimentos</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Investimentos</h1>
+        <div class="dataContainer">
+            <div class="dataInput">
+                <h2>Simulador</h2>
+                    <form id="form" onsubmit="validation(event)">
+                    <div class="block">
+                        <div class="flex-column">
+                            <p class="info rendimento-info">Rendimento <span mouse>&#9432;</span></p>
+                            <div class="wrapper brutoLiquido">
+                                <input type="radio" name="select" id="option-bruto" checked>
+                                <input type="radio" name="select" id="option-liquido">
+
+                                <label for="option-bruto" class="option option-bruto" name="brutoLiquido">
+                                    <div class="check">&#10003;</div>
+                                    <span>Bruto</span>
+                                </label>
+                                <label for="option-liquido" class="option option-liquido" name="brutoLiquido">
+                                    <div class="check">&#10003;</div>
+                                    <span>Líquido</span>
+                                </label>
+                            </div>
+
+                    
+                            <label for="Aporte Inicial">Aporte Inicial</label>
+                            <span class="input-real left input-container">
+                                <input type="number" id="aporteInicial" name="Aporte Inicial" />
+                                <!-- <span class="alert">Aporte deve conter um valor</span> -->
+                            </span>
+                    
+                            <label for="Prazo">Prazo (em meses)</label>
+                            <span class="left input-container">
+                                <input type="number" id="prazo" name="Prazo" />
+                                <!-- <span class="alert">Prazo deve conter um valor</span> -->
+                            </span>
+                            
+                            <label for="ipca">IPCA (ao ano)</label>
+                            <span class="input-container">
+                                <input type="text" id="ipca" name="ipca" />
+                            </span>
+                        </div>
+                    
+                        <div class="flex-column">
+                            <p class="info indexação-info">Tipos de indexação <span>&#9432;</span></p>
+                            <div class="wrapper prePosFixado">
+                                <input type="radio" name="select2" id="option-pre" checked>
+                                <input type="radio" name="select2" id="option-pos">
+                                <input type="radio" name="select2" id="option-fixado">
+                            
+                                <label for="option-pre" class="option option-pre">
+                                    <div class="check">&#10003;</div>
+                                    <span>Pré</span>
+                                </label>
+                                <label for="option-pos" class="option option-pos">
+                                    <div class="check">&#10003;</div>
+                                    <span>Pos</span>
+                                </label>
+                                <label for="option-fixado" class="option option-fixado">
+                                    <div class="check">&#10003;</div>
+                                    <span>Fixado</span>
+                                </label>
+                            </div>
+                    
+                    
+                            <label for="Aporte Mensal">Aporte Mensal</label>
+                            <span class="input-real left input-container">
+                                <input type="number" id="aporteMensal" name="Aporte Mensal" />
+                                <!-- <span class="alert">Aporte deve conter um valor</span> -->
+                            </span>
+                    
+                            <label for="Rentabilidade">Rentabilidade</label>
+                            <span class="left input-container">
+                                <input type="number" id="rentabilidade" name="Rentabilidade" />
+                                <!-- <span class="alert">Rentabilidade deve conter um valor</span> -->
+                            </span>
+                            
+                            <label for="cdi">CDI (ao ano)</label>
+                            <span class="input-container">
+                                <input type="text" id="cdi" name="cdi" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-controllers">
+                        <span class="alert"></span>
+                        
+                        <div class="buttons">
+                            <button type="reset">Limpar campos</button>
+                            <button type="submit" onsubmit="takeData()">Simular</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="result-container" id="result-container">
+                <h2>Resultado da Simulação</h2>
+                <div id="result-block">
+                    <div>
+                        <h3>Valor final Bruto</h3>
+                        <p id="valorFinalBruto"></p>
+                    </div>
+                
+                    <div>
+                        <h3>Alíquota do IR</h3>
+                        <p id="aliquotaIr"></p>
+                    </div>
+                
+                    <div>
+                        <h3>Valor Pago em IR</h3>
+                        <p id="valorPagoIr"></p>
+                    </div>
+                
+                    <div>
+                        <h3>Valor Final Líquido</h3>
+                        <p id="valorFinalLiquido"></p>
+                    </div>
+                
+                    <div>
+                        <h3>Valor Total Investido</h3>
+                        <p id="totalInvestido"></p>
+                    </div>
+                
+                    <div>
+                        <h3>Ganho Líquido</h3>
+                        <p id="ganhoLiquido"></p>
+                    </div>
+                </div>
+
+                <div id="graficoContainer">
+                    <h3>Projeção de Valores</h3>
+                    <span class="legenda-lateral">Valor (R$)</span>
+                    <div class="grafico" id="grafico">
+                        <!-- Barras do gráfico geradas via Javascript -->
+                    </div>
+
+                    <div class="meses-grafico">
+                        <span>0</span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>10</span>
+                    </div>
+                
+                    <div class="legenda">
+                        <span>Tempo (meses)</span>
+                        <div>
+                            <span>Com aporte</span>
+                            <span>Sem aporte</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="main.js"></script>
+</body>
+</html>
